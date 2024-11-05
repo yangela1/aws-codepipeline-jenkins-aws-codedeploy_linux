@@ -9,7 +9,7 @@ end
 
 # Task to compile HAML files
 task :compile do
-  input_file = 'app/index.haml'  # Path to your HAML file
+  input_file = 'app/index.html.haml'  # Path to your HAML file
   output_file = 'dist/index.html' # Path where the compiled HTML will be saved
 
   # Ensure the output directory exists
