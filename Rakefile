@@ -1,34 +1,29 @@
-# Rakefile
 require 'rake'
 require 'haml'
 require 'fileutils'
 
-namespace :deploy do
-  desc 'Compile HAML to HTML'
-  task :compile do
-    haml_file = 'app/index.haml'
-    html_file = 'app/index.html'
+# Task to clean up the compiled HTML files
+task :clean do
+  FileUtils.rm_r(Dir.glob("./dist/*.html"), force: true)
+end
 
-    # Check if the HAML file exists
-    if File.exist?(haml_file)
-      # Compile HAML to HTML
-      Haml::Engine.new(File.read(haml_file)).render(File.open(html_file, 'w'))
-      puts "Compiled #{haml_file} to #{html_file}"
-    else
-      puts "HAML file #{haml_file} does not exist."
-    end
+# Task to compile HAML files
+task :compile do
+  input_file = 'app/index.haml'  # Path to your HAML file
+  output_file = 'dist/index.html' # Path where the compiled HTML will be saved
+
+  # Ensure the output directory exists
+  FileUtils.mkdir_p(File.dirname(output_file))
+
+  # Compile the HAML to HTML
+  File.open(output_file, 'w') do |f|
+    f.write Haml::Engine.new(File.read(input_file)).render
   end
+end
 
-  desc 'Clean up compiled HTML files'
-  task :clean do
-    FileUtils.rm_f(Dir.glob('app/*.html'))
-    puts 'Cleaned up compiled HTML files.'
-  end
-
-  desc 'Run tests'
-  task :test do
-    Dir.glob('test/*_test.rb').each do |test_file|
-      require_relative test_file
-    end
+# Task to run tests (if applicable)
+task :test do 
+  Rake::TestTask.new do |t|
+    t.test_files = FileList['test/jenkins_sample_test.rb']
   end
 end
