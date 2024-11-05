@@ -25,8 +25,8 @@ task :compile do
 end
 
 # Task to run tests (if applicable)
-task :test do 
-  Rake::TestTask.new do |t|
-    t.test_files = FileList['test/jenkins_sample_test.rb']
-  end
+# Task to run the tests
+task :test do
+  # Run all tests in the current file
+  Minitest.run
 end
