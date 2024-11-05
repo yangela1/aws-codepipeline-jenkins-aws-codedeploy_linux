@@ -2,6 +2,8 @@ require 'rake'
 require 'haml'
 require 'fileutils'
 
+task default: :compile
+
 # Task to clean up the compiled HTML files
 task :clean do
   FileUtils.rm_r(Dir.glob("./dist/*.html"), force: true)
